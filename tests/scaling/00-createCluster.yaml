@@ -35,10 +35,10 @@ spec:
         requests:
           storage: 256Mi
   config:
-    cassandra-yaml:
-      authenticator: org.apache.cassandra.auth.PasswordAuthenticator
-      authorizer: org.apache.cassandra.auth.CassandraAuthorizer
-      role_manager: org.apache.cassandra.auth.CassandraRoleManager
+    # cassandra-yaml:
+    #   authenticator: org.apache.cassandra.auth.PasswordAuthenticator
+    #   authorizer: org.apache.cassandra.auth.CassandraAuthorizer
+    #   role_manager: org.apache.cassandra.auth.CassandraRoleManager
     jvm-options:
       initial_heap_size: 256M
       max_heap_size: 256M
