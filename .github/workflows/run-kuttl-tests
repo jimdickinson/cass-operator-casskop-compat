@@ -1,0 +1,49 @@
+name: Compatibility casskop/cass-operator
+on: push
+
+jobs:
+  install-kuttl:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Cache Kuttl
+      id: cache-kuttl
+      uses: actions/cache@v2
+      with:
+        path: kuttl
+        key: ${{ runner.os }}-kuttl-0.7.2
+
+    - name: download-kuttl
+      if: steps.cache-kuttl.outputs.cache-hit != 'true'
+      uses: wei/wget@v1
+      with:
+        args: -c -O kuttl https://github.com/kudobuilder/kuttl/releases/download/v0.7.2/kubectl-kuttl_0.7.2_linux_i386
+
+  kuttl-casskop:
+    needs: install-kuttl
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - uses: rinx/setup-k3d@v0.0.3
+      with:
+        agents: 2
+
+    - name: Cache Kuttl
+      id: cache-kuttl
+      uses: actions/cache@v2
+      with:
+        path: kuttl
+        key: ${{ runner.os }}-kuttl-0.7.2
+
+    - run: |
+        chmod u+x kuttl
+        ./kuttl test --config kuttl-test-casskop.yaml
+
+  kuttl-cass-operator:
+    needs: install-kuttl
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        chmod u+x kuttl
+        ./kuttl test --config kuttl-test.yaml

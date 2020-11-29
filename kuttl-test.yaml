@@ -1,0 +1,22 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+# crdDir: ./operator/deploy/crds
+testDirs:
+  - tests
+commands:
+ - command: kubectl apply -f https://raw.githubusercontent.com/datastax/cass-operator/master/docs/user/cass-operator-manifests-v1.19.yaml
+   ignoreFailure: true
+ # - command: helm repo add datastax https://datastax.github.io/charts --force-update
+ #   ignoreFailure: true
+ # - command: kubectl create namespace cass-operator
+ #   ignoreFailure: true
+ # - command: kubectl delete namespace kuttl-tests
+ #   ignoreFailure: true
+ # - command: kubectl create namespace kuttl-tests
+ #   ignoreFailure: true
+ # - command: helm install -n kuttl-tests --set clusterWideInstall=false casskop datastax/cass-operator
+ # - command: helm install -n cass-operator cass-operator datastax/cass-operator
+ #   ignoreFailure: true
+ # - command: helm install --generate-name --set clusterWideInstall=false ./charts/cass-operator-chart
+ #   namespaced: true
+timeout: 1200

@@ -1,0 +1,45 @@
+# apiVersion: kuttl.dev/v1beta1
+# kind: TestStep
+# commands:
+#   - command: helm install --generate-name --set clusterWideInstall=false --set installCRDs=false ../../../charts/cass-operator-chart
+#     namespaced: true
+# ---
+apiVersion: cassandra.datastax.com/v1beta1
+kind: CassandraDatacenter
+metadata:
+  name: dc1
+  namespace: cass-operator
+spec:
+  clusterName: cluster1
+  serverType: cassandra
+  serverVersion: 3.11.7
+  managementApiAuth:
+    insecure: {}
+  size: 2
+  racks:
+    - name: rack1
+    - name: rack2
+  # To run multiple cassie nodes on one k8s node
+  allowMultipleNodesPerWorker: true
+  resources:
+    requests: &requests
+      memory: 512Mi
+      cpu: 600m
+    limits: *requests
+  storageConfig:
+    cassandraDataVolumeClaimSpec:
+      storageClassName: local-path
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 256Mi
+  config:
+    cassandra-yaml:
+      authenticator: org.apache.cassandra.auth.PasswordAuthenticator
+      authorizer: org.apache.cassandra.auth.CassandraAuthorizer
+      role_manager: org.apache.cassandra.auth.CassandraRoleManager
+    jvm-options:
+      initial_heap_size: 256M
+      max_heap_size: 256M
+      max_direct_memory: 96M
