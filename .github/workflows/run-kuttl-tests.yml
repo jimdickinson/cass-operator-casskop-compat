@@ -36,7 +36,8 @@ jobs:
         path: kuttl
         key: ${{ runner.os }}-kuttl-0.7.2
 
-    - run: |
+    - name: Run kuttl tests
+      run: |
         chmod u+x kuttl
         ./kuttl test --config kuttl-test-casskop.yaml
 
@@ -44,6 +45,21 @@ jobs:
     needs: install-kuttl
     runs-on: ubuntu-latest
     steps:
-    - run: |
+    - name: Check out repository
+      uses: actions/checkout@v2
+
+    - uses: rinx/setup-k3d@v0.0.3
+      with:
+        agents: 2
+
+    - name: Cache Kuttl
+      id: cache-kuttl
+      uses: actions/cache@v2
+      with:
+        path: kuttl
+        key: ${{ runner.os }}-kuttl-0.7.2
+
+    - name: Run kuttl tests
+      run: |
         chmod u+x kuttl
         ./kuttl test --config kuttl-test.yaml
