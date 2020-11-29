@@ -26,6 +26,8 @@ jobs:
       uses: actions/checkout@v2
 
     - uses: rinx/setup-k3d@v0.0.3
+      with:
+        agents: 1
 
     - name: Cache Kuttl
       id: cache-kuttl
@@ -47,6 +49,8 @@ jobs:
       uses: actions/checkout@v2
 
     - uses: rinx/setup-k3d@v0.0.3
+      with:
+        agents: 1
 
     - name: Cache Kuttl
       id: cache-kuttl
